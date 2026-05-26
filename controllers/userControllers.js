@@ -1,18 +1,38 @@
 import userService from "../services/userServices.js";
 
-const createUser = async (req, res, next) => {
+const getMe = async (req, res, next) => {
   try {
-    const user = await userService.createUser(req.body);
-    res.json(user);
+    res.status(200).json({
+      message: "Usuário logado encontrado com sucesso",
+      data: req.user,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-const getUser = async (req, res, next) => {
+const updateMe = async (req, res, next) => {
   try {
-    const user = await userService.getUser();
-    res.json(user);
+    const user = await userService.updateMe(req.user._id, req.body);
+
+    res.status(200).json({
+      message: "Perfil atualizado com sucesso",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await userService.getAllUsers();
+
+    res.status(200).json({
+      message: "Usuários encontrados com sucesso",
+      total: users.length,
+      data: users,
+    });
   } catch (error) {
     next(error);
   }
@@ -21,37 +41,61 @@ const getUser = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     const user = await userService.getUserById(req.params.id);
-    res.json(user);
+
+    res.status(200).json({
+      message: "Usuário encontrado com sucesso",
+      data: user,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-const putUserById = async (req, res, next) => {
+const updateUser = async (req, res, next) => {
   try {
-    const user = await userService.putUserById(req.params.id, req.body);
-    res.json(user);
+    const user = await userService.updateUser(req.params.id, req.body);
+
+    res.status(200).json({
+      message: "Usuário atualizado com sucesso",
+      data: user,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-const patchUserById = async (req, res, next) => {
+const deactivateUser = async (req, res, next) => {
   try {
-    const user = await userService.patchUserById(req.params.id);
-    res.json(user);
+    const user = await userService.deactivateUser(req.params.id);
+
+    res.status(200).json({
+      message: "Usuário desativado com sucesso",
+      data: user,
+    });
   } catch (error) {
     next(error);
   }
 };
 
+const activateUser = async (req, res, next) => {
+  try {
+    const user = await userService.activateUser(req.params.id);
+
+    res.status(200).json({
+      message: "Usuário ativado com sucesso",
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export default {
-
-  createUser,
-  getUser,
+  getMe,
+  updateMe,
+  getAllUsers,
   getUserById,
-  putUserById,
-  patchUserById,
-
-}
+  updateUser,
+  deactivateUser,
+  activateUser,
+};
