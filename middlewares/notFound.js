@@ -3,5 +3,7 @@ const notFound = (req, res, next) => {
       error: "Rota não encontrada",
     });
   };
+
   
+
   export default notFound;
